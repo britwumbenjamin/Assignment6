@@ -4,33 +4,42 @@ const users = require('./users')
 
 const router = express.Router();
 
+const usermodel = require('./usermodel')
 
-router.post('/login', function(request, response){
-    console.log(request.body);
+
+router.post('/login', async function(request, response){
     const {username,password} = request.body
-    let user = users.filter((data)=> data.username === username)
+    
+    let responseData = await usermodel.findOne({username})
+    console.log(responseData)
 
-    if (user.length == 1)
-    { if (user[0].password == password){
-        response.send({message:'Login successful'}) 
+    if(responseData){
+
+        if (password === responseData.passwor){
+            response.status(200).send({message:'login successful'})
+        }
+        else{
+            response.status(200).send({message:'wrong username or password'})
+        } 
     }
-        response.send({message:'username or password is wrong'})
-}
-else{
-    response.send({message:'login failed'})
-}
+    else {
+        response.status(400).send({message:'user does not exist'})
+    }
+    
 })
 
 
-router.post('/', function(request, response){
-    const {username,password,confirm_password} = request.body
+router.post('/signup', async function(request, response){
+    const {username,password,email,confirm_password} = request.body
 
-    if (password === confirm_password ) {
-        response.send({message:'sign up successful'}) 
-    } else
-    {
-        response.send({message:'passwords do not match'})
-}
+    let userModel = new usermodel({username,password,email,confirm_password})
+    let responseData = await userModel.save()
+
+    if(responseData){
+    response.status(200).send({message:'signup succussful'})}
+    else{
+        response.status(400).status({message:'error occured', data: responseData})
+    }
 })
 
 module.exports = router;

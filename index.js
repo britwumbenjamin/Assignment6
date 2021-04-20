@@ -4,16 +4,18 @@ const routes = require('./route')
 
 const cors = require('cors')
 
+const connectDB = require('./db')
+
 const app = express();
 
 app.use(express.json())
 
-app.use(cors())
+connectDB()
 
-const port = 6000;
+const port = 4000;
 
 app.use(cors())
 
 app.use('/api/v1',routes)
 
-app.listen(port, () => console.log("server is running at port ${port}........."))
+app.listen(port, () => console.log(`server is running at port ${port}.........`))
