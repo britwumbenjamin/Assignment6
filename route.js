@@ -43,3 +43,5 @@ router.post('/signup', async function(request, response){
 })
 
 module.exports = router;
+
+// git remote set-url origin <--repo-->

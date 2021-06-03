@@ -13,3 +13,6 @@ const UserModuleSchema = new Schema(
 const UserModel = mongoose.model('UserModel',UserModuleSchema);
 module.exports = UserModel;
 
+//npm install passport
+//npm install passport-local-mongoose
+
